@@ -41,6 +41,12 @@ public class JsonData<D> {
         this.msg = msg;
         this.data = data;
     }
+
+    public JsonData(int status,String msg){
+        this.status = status;
+        this.msg = msg;
+    }
+
     public JsonData(){}
 
     public static <D> JsonData<D> success(D data){

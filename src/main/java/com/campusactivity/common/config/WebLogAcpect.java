@@ -30,7 +30,7 @@ public class WebLogAcpect {
     /**
      * 定义切入点，切入点为com.demo.controller下的所有函数
      */
-    @Pointcut("execution(public * com.campusactivity.campusactivity.core.*.controller.*.*(..))")
+    @Pointcut("execution(public * com.campusactivity.core.*.controller.*.*(..))")
     public void webLog(){}
 
     /**

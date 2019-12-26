@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
 @Aspect
-@RestControllerAdvice(value = "com.q1hang.activiti.core")
+@RestControllerAdvice(value = "com.campusactivity.core")
 public class DataResponseWrapper implements ResponseBodyAdvice<Object> {
 
     @Override
