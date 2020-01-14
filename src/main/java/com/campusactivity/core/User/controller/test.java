@@ -30,7 +30,7 @@ public class test {
         if(hello==null||hello.length()==0){
            return "redis没有这个值";
         }
-        return "test success!!!";
+        return hello;
     }
 
     @GetMapping("getAllUser")

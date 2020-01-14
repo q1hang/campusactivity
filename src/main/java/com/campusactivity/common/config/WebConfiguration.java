@@ -18,7 +18,8 @@ import java.util.List;
 @Slf4j
 public class WebConfiguration implements WebMvcConfigurer {
     private final static List<String> EXCLUDE_PATH = Arrays.asList(
-            "/login/login");
+            "/login/login",
+            "/test/test");
     /**
      * 注册拦截器
      * @param registry  注册拦截器

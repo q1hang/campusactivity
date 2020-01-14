@@ -7,14 +7,14 @@ import com.campusactivity.core.login.dto.AppLoginDTO;
 
 /**
  * <p>
- *  服务类
+ * 用户表 服务类
  * </p>
  *
  * @author qihang
- * @since 2019-12-13
+ * @since 2020-01-14
  */
 public interface ISysUserService extends IService<SysUser> {
 
-
     public UserInfoDTO appLogin(AppLoginDTO appLoginDTO) throws Exception;
+
 }
