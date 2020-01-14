@@ -22,13 +22,26 @@ public class UserInfoDTO {
     private String username;
 
     /**
-     * 密码
+     * 学号
      */
-    private String password;
+    private String studentId;
+
+    /**
+     * 年级号
+     */
+    private String gradeId;
+
+    /**
+     * 备注
+     */
+    private String remarks;
+
 
     public UserInfoDTO(SysUser sysUser){
         this.id=sysUser.getId();
         this.username=sysUser.getUsername();
-        this.password=sysUser.getPassword();
+        this.studentId=sysUser.getStudentId();
+        this.gradeId=sysUser.getGradeId();
+        this.remarks=sysUser.getRemarks();
     }
 }
