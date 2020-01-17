@@ -3,6 +3,8 @@ package com.campusactivity.core.community.entity;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import java.time.LocalDateTime;
+import java.util.Date;
+
 import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -50,10 +52,10 @@ public class Permission extends Model {
     private String remarks;
 
     @TableField("CreateDate")
-    private LocalDateTime CreateDate;
+    private Date CreateDate;
 
     @TableField("UpdateDate")
-    private LocalDateTime UpdateDate;
+    private Date UpdateDate;
 
     @TableField("CreateUser")
     private Integer CreateUser;

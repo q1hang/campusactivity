@@ -29,6 +29,8 @@ public class AuthInterceptor implements HandlerInterceptor {
         if (claims == null) {
             throw new SSOLoginException("请先登录接口后台", Constant.TOKEN_INVALID);
         }
+        Integer userId = claims.get("userId", Integer.class);
+        request.getSession().setAttribute("userId", userId);
         return true;
     }
 }

@@ -3,6 +3,8 @@ package com.campusactivity.core.community.entity;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import java.time.LocalDateTime;
+import java.util.Date;
+
 import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -61,13 +63,13 @@ public class Communitymembers extends Model {
      * 创建时间
      */
     @TableField("CreateDate")
-    private LocalDateTime CreateDate;
+    private Date CreateDate;
 
     /**
      * 更新时间
      */
     @TableField("UpdateDate")
-    private LocalDateTime UpdateDate;
+    private Date UpdateDate;
 
     /**
      * 创建者
