@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @author qihang
  * @since 2020-01-14
  */
-public interface IPermissionService extends IService<Permission> {
+public interface PermissionService extends IService<Permission> {
 
 }

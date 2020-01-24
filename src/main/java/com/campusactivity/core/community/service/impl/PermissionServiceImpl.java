@@ -2,7 +2,7 @@ package com.campusactivity.core.community.service.impl;
 
 import com.campusactivity.core.community.entity.Permission;
 import com.campusactivity.core.community.mapper.PermissionMapper;
-import com.campusactivity.core.community.service.IPermissionService;
+import com.campusactivity.core.community.service.PermissionService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +15,6 @@ import org.springframework.stereotype.Service;
  * @since 2020-01-14
  */
 @Service
-public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permission> implements IPermissionService {
+public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permission> implements PermissionService {
 
 }

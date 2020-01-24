@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @author qihang
  * @since 2020-01-14
  */
-public interface ICommunitymembersService extends IService<Communitymembers> {
+public interface CommunitymembersService extends IService<Communitymembers> {
 
 }

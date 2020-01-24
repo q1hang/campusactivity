@@ -2,4 +2,22 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.campusactivity.core.community.mapper.CommunityinformationMapper">
 
+
+
+    <select id="pageCommunityinfo" resultType="com.campusactivity.core.community.dto.CIDTO">
+    select
+    id,
+    CommunityName as community_name,
+    type as type,
+    Originator as originator,
+    Purpose as purpose,
+    ContactsNumber as contacts_number,
+    CreateDate as create_date,
+    UpdateDate as update_date
+    from communityinformation
+    <if test="ew != null and ew.sqlSegment != null">
+        where ${ew.sqlSegment}
+    </if>
+
+    </select>
 </mapper>
