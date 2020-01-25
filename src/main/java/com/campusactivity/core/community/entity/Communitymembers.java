@@ -6,8 +6,11 @@ import java.time.LocalDateTime;
 import java.util.Date;
 
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.campusactivity.core.community.dto.CMDTO;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 /**
@@ -21,6 +24,8 @@ import lombok.experimental.Accessors;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
+@AllArgsConstructor
+@NoArgsConstructor
 public class Communitymembers extends Model {
 
     private static final long serialVersionUID = 1L;
@@ -45,7 +50,7 @@ public class Communitymembers extends Model {
      * 到达时间
      */
     @TableField("ArrivalTime")
-    private LocalDateTime ArrivalTime;
+    private Date ArrivalTime;
 
     /**
      * 状态:1.审核中2.在职3.已退出4.毕业
@@ -83,5 +88,17 @@ public class Communitymembers extends Model {
     @TableField("UpdateUser")
     private Integer UpdateUser;
 
-
+    public Communitymembers(CMDTO dto){
+        this.id=dto.getId();
+        this.UserId=dto.getUserId();
+        this.CommunityId=dto.getCommunityId();
+        this.ArrivalTime=dto.getArrivalTime();
+        this.state=dto.getState();
+        this.position=dto.getPosition();
+        this.communitymemberscol=dto.getCommunitymemberscol();
+        this.CreateDate=dto.getCreateDate();
+        this.UpdateDate=dto.getUpdateDate();
+        this.CreateUser=dto.getCreateUser();
+        this.UpdateUser=dto.getUpdateUser();
+    }
 }

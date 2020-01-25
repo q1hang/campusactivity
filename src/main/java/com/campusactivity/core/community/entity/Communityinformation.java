@@ -84,12 +84,11 @@ public class Communityinformation extends Model {
     private Integer UpdateUser;
 
     public Communityinformation(CIDTO dto){
+        this.id=dto.getId();
         this.CommunityName=dto.getCommunityName();
         this.ContactsNumber=dto.getContactsNumber();
         this.type=dto.getType();
         this.Originator=dto.getOriginator();
         this.Purpose=dto.getPurpose();
-        this.CreateDate=new Date();
-        this.UpdateDate=new Date();
     }
 }

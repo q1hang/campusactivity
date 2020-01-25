@@ -33,9 +33,6 @@ public class CommunityinformationServiceImpl extends ServiceImpl<Communityinform
     @Override
     public IPage<CIDTO> search(Page page, CIDTO dto) throws Exception{
         QueryWrapper<Communityinformation> wrapper=new QueryWrapper<>();
-        if(dto==null){
-            dto=new CIDTO();
-        }
         Integer id = dto.getId();
         String communityName = dto.getCommunityName();
         String contactsNumber = dto.getContactsNumber();
