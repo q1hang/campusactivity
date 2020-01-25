@@ -11,6 +11,7 @@ import com.campusactivity.core.community.service.impl.CommunityinformationServic
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,8 +44,9 @@ public class CommunityinformationController {
      */
     @PostMapping("/save")
     public CIDTO save(@RequestBody CIDTO dto){
-        System.out.println(dto.toString());
         Communityinformation communityinformation = new Communityinformation(dto);
+        communityinformation.setCreateDate(new Date());
+        communityinformation.setUpdateDate(new Date());
         //保存到数据库
         communityinformationService.save(communityinformation);
         return new CIDTO(communityinformation);
@@ -60,14 +62,16 @@ public class CommunityinformationController {
         Communityinformation communityinformation = new Communityinformation(dto);
         //更新到数据库
         QueryWrapper<Communityinformation> wrapper = new QueryWrapper<>();
+        communityinformation.setUpdateDate(new Date());
         wrapper.eq("id",dto.getId());
         communityinformationService.update(communityinformation,wrapper);
-        return dto;
+        return new CIDTO(communityinformation);
     }
 
     @PostMapping("/delete")
-    public void delete(@RequestBody Integer id){
+    public void delete(@RequestParam Integer id){
         communityinformationService.removeById(id);
+        //利用逻辑删除
     }
 }
 
