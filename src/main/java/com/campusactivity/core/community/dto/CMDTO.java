@@ -2,6 +2,7 @@ package com.campusactivity.core.community.dto;
 
 import com.campusactivity.common.base.PageDTO;
 import com.campusactivity.core.community.entity.Communitymembers;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -40,6 +41,7 @@ public class CMDTO extends PageDTO {
     /**
      * 到达时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date arrivalTime;
 
     /**
@@ -57,11 +59,13 @@ public class CMDTO extends PageDTO {
     /**
      * 创建时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date createDate;
 
     /**
      * 更新时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date updateDate;
 
     /**

@@ -1,5 +1,6 @@
 package com.campusactivity.core.community.service;
 
+import com.campusactivity.core.community.dto.TaskDto;
 import com.campusactivity.core.community.entity.Communitymembers;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -12,5 +13,10 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2020-01-14
  */
 public interface CommunitymembersService extends IService<Communitymembers> {
+
+
+    public void startProcess(Integer CommunityId) throws Exception;
+
+    public TaskDto approval(String business,String opinion);
 
 }

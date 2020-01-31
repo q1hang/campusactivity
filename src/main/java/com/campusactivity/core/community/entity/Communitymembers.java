@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.util.Date;
 
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.campusactivity.common.util.ContextUtil;
 import com.campusactivity.core.community.dto.CMDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -96,9 +97,9 @@ public class Communitymembers extends Model {
         this.state=dto.getState();
         this.position=dto.getPosition();
         this.communitymemberscol=dto.getCommunitymemberscol();
-        this.CreateDate=dto.getCreateDate();
-        this.UpdateDate=dto.getUpdateDate();
-        this.CreateUser=dto.getCreateUser();
-        this.UpdateUser=dto.getUpdateUser();
+        this.CreateDate=new Date();
+        this.UpdateDate=new Date();
+        this.CreateUser=ContextUtil.getCurrentUserId();
+        this.UpdateUser=ContextUtil.getCurrentUserId();
     }
 }

@@ -18,8 +18,8 @@ public class ContextUtil {
      * @Description: 获取当前登录用户的主键id
      * @return 返回Long类型用户id
      */
-    public static Long getCurrentUserId(){
-        return (Long)getFromSession("userId");
+    public static Integer getCurrentUserId(){
+        return (Integer)getFromSession("userId");
     }
 
 

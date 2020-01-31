@@ -6,8 +6,11 @@ import java.time.LocalDateTime;
 import java.util.Date;
 
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.campusactivity.common.util.ContextUtil;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 /**
@@ -21,6 +24,8 @@ import lombok.experimental.Accessors;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
+@NoArgsConstructor
+@AllArgsConstructor
 public class Permission extends Model {
 
     private static final long serialVersionUID = 1L;
@@ -64,4 +69,14 @@ public class Permission extends Model {
     private Integer UpdateUser;
 
 
+    public Permission(Integer userId,Integer communityId,String privilegeLevel,String remarks){
+        UserId=userId;
+        CommunityId=communityId;
+        PrivilegeLevel=privilegeLevel;
+        this.remarks=remarks;
+        CreateDate=new Date();
+        UpdateDate=new Date();
+        CreateUser= ContextUtil.getCurrentUserId();
+        UpdateUser= ContextUtil.getCurrentUserId();
+    }
 }

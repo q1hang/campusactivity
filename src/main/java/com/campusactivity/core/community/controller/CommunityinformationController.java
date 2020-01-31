@@ -4,10 +4,14 @@ package com.campusactivity.core.community.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.campusactivity.common.util.Constant;
+import com.campusactivity.common.util.ContextUtil;
 import com.campusactivity.core.community.dto.CIDTO;
 import com.campusactivity.core.community.entity.Communityinformation;
+import com.campusactivity.core.community.entity.Permission;
 import com.campusactivity.core.community.service.CommunityinformationService;
 import com.campusactivity.core.community.service.impl.CommunityinformationServiceImpl;
+import com.campusactivity.core.community.service.impl.PermissionServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,6 +33,8 @@ public class CommunityinformationController {
 
     @Autowired
     private CommunityinformationServiceImpl communityinformationService;
+    @Autowired
+    private PermissionServiceImpl permissionService;
 
     @PostMapping("/search")
     public IPage<CIDTO> search(@RequestBody(required = false)  CIDTO dto) throws Exception{
@@ -47,8 +53,14 @@ public class CommunityinformationController {
         Communityinformation communityinformation = new Communityinformation(dto);
         communityinformation.setCreateDate(new Date());
         communityinformation.setUpdateDate(new Date());
-        //保存到数据库
+        communityinformation.setCreateUser(ContextUtil.getCurrentUserId());
+        communityinformation.setUpdateUser(ContextUtil.getCurrentUserId());
+        //保存社团信息
         communityinformationService.save(communityinformation);
+        Permission createUser=new Permission(ContextUtil.getCurrentUserId(),communityinformation.getId(),
+                Constant.PRIVILEGELEVEL_ADMIN,communityinformation.getCommunityName()+"创始人");
+        //添加创建人权限
+        permissionService.save(createUser);
         return new CIDTO(communityinformation);
     }
 
