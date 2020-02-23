@@ -18,4 +18,5 @@ import java.util.List;
  */
 public interface CommunityinformationService extends IService<Communityinformation> {
     public IPage<CIDTO> search(Page page, CIDTO dto) throws Exception;
+
 }

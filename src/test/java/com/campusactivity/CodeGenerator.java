@@ -68,7 +68,7 @@ public class CodeGenerator {
                 return super.processTypeConvert(globalConfig, fieldType);
             }
         });
-        dsc.setUrl("jdbc:mysql://127.0.0.1:3306/campusactivity?useUnicode=true&useSSL=false&characterEncoding=utf8");
+        dsc.setUrl("jdbc:mysql://47.107.126.217:3306/campusactivity?useUnicode=true&useSSL=false&characterEncoding=utf8");
         // dsc.setSchemaName("public");
         dsc.setDriverName("com.mysql.jdbc.Driver");
         dsc.setUsername("root");

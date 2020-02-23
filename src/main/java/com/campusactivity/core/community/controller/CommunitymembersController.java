@@ -1,8 +1,11 @@
 package com.campusactivity.core.community.controller;
 
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.campusactivity.common.exception.CustomException;
 import com.campusactivity.common.exception.ParamException;
+import com.campusactivity.core.community.dto.CIDTO;
 import com.campusactivity.core.community.dto.CMDTO;
 import com.campusactivity.core.community.dto.TaskDto;
 import com.campusactivity.core.community.entity.Communitymembers;
@@ -16,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * <p>
@@ -89,6 +93,19 @@ public class CommunitymembersController {
         Task task = taskService.createTaskQuery().processInstanceBusinessKey(business).singleResult();
         return task==null?null:new TaskDto(task).pending();
     }
+
+
+    @GetMapping("/getAlreadyJoined")
+    public List<CIDTO> getAlreadyJoined() throws Exception{
+        return communitymembersService.getAlreadyJoined();
+    }
+
+    @PostMapping("/getCurrentMembers")
+    public IPage<CMDTO> getCurrentMembers(@RequestBody CMDTO dto)throws Exception{
+        Page page = new Page(dto.getPageNum(), dto.getPageSize());
+        return communitymembersService.getCurrentMembers(page,dto.getCommunityId());
+    }
+
 
 }
 

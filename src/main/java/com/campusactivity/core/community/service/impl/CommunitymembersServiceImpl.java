@@ -1,11 +1,15 @@
 package com.campusactivity.core.community.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.campusactivity.common.exception.CustomException;
 import com.campusactivity.common.exception.NullTaskException;
-import com.campusactivity.common.util.Constant;
 import com.campusactivity.common.util.ContextUtil;
+import com.campusactivity.core.community.dto.CIDTO;
+import com.campusactivity.core.community.dto.CMDTO;
 import com.campusactivity.core.community.dto.TaskDto;
+import com.campusactivity.core.community.entity.Communityinformation;
 import com.campusactivity.core.community.entity.Communitymembers;
 import com.campusactivity.core.community.entity.Permission;
 import com.campusactivity.core.community.entity.ProcessStatus;
@@ -22,10 +26,10 @@ import org.activiti.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.campusactivity.common.util.Constant.PRIVILEGELEVEL_ADMIN;
 import static com.campusactivity.common.util.Constant.PRIVILEGELEVEL_ORDINARY;
@@ -51,6 +55,10 @@ public class CommunitymembersServiceImpl extends ServiceImpl<CommunitymembersMap
     private ProcessStatusServiceImpl processStatusService;
     @Autowired
     private PermissionServiceImpl permissionService;
+    @Autowired
+    private CommunityinformationServiceImpl communityinformationService;
+    @Resource
+    private CommunitymembersMapper communitymembersMapper;
 
     @Override
     public void startProcess(Integer communityId) throws Exception{
@@ -152,5 +160,37 @@ public class CommunitymembersServiceImpl extends ServiceImpl<CommunitymembersMap
         Communitymembers one = getOne(new QueryWrapper<Communitymembers>().eq("UserId", userId)
                 .eq("CommunityId", communityId));
         return one!=null;
+    }
+
+    /**
+     * 获取当前用户已加入的社团信息列表
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public List<CIDTO> getAlreadyJoined() throws Exception {
+        Integer currentUserId = ContextUtil.getCurrentUserId();
+        List<Communitymembers> list = list(new QueryWrapper<Communitymembers>()
+        .eq("UserId", currentUserId));
+        List<Integer> comunityIdList = list.stream().map(x -> {
+            return x.getCommunityId();
+        }).collect(Collectors.toList());
+        Collection<Communityinformation> communityinformations = communityinformationService.listByIds(comunityIdList);
+        List<CIDTO> result = communityinformations.stream().map(x -> {
+            return new CIDTO(x);
+        }).collect(Collectors.toList());
+        return result;
+    }
+
+    /**
+     * 获取某个社团的所有社员信息
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public IPage<CMDTO> getCurrentMembers(Page page,Integer communityId) throws Exception {
+        QueryWrapper<Communitymembers> wrapper = new QueryWrapper<>();
+        wrapper.eq("CommunityId", communityId);
+        return communitymembersMapper.pageCommunitymem(page, wrapper);
     }
 }

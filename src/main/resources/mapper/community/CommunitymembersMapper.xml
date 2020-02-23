@@ -2,4 +2,25 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.campusactivity.core.community.mapper.CommunitymembersMapper">
 
+
+    <select id="pageCommunitymem" resultType="com.campusactivity.core.community.dto.CMDTO">
+        select
+        id,
+        CommunityId as community_id,
+        UserId as user_id,
+        ArrivalTime as arrival_time,
+        state as state,
+        position as position,
+        communitymemberscol as communitymemberscol,
+        CreateDate as create_date,
+        UpdateDate as update_date,
+        CreateUser as create_user,
+        UpdateUser as update_user
+        from communitymembers
+        <if test="ew != null and ew.sqlSegment != null">
+            where ${ew.sqlSegment}
+        </if>
+
+    </select>
+
 </mapper>

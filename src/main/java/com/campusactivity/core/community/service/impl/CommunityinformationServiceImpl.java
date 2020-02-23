@@ -3,6 +3,7 @@ package com.campusactivity.core.community.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.campusactivity.common.util.ContextUtil;
 import com.campusactivity.common.util.DateUtils;
 import com.campusactivity.core.community.dto.CIDTO;
 import com.campusactivity.core.community.entity.Communityinformation;
@@ -60,4 +61,5 @@ public class CommunityinformationServiceImpl extends ServiceImpl<Communityinform
         IPage<CIDTO> result = communityinformationMapper.pageCommunityinfo(page, wrapper);
         return result;
     }
+
 }

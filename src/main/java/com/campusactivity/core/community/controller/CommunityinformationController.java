@@ -8,9 +8,11 @@ import com.campusactivity.common.util.Constant;
 import com.campusactivity.common.util.ContextUtil;
 import com.campusactivity.core.community.dto.CIDTO;
 import com.campusactivity.core.community.entity.Communityinformation;
+import com.campusactivity.core.community.entity.Communitymembers;
 import com.campusactivity.core.community.entity.Permission;
 import com.campusactivity.core.community.service.CommunityinformationService;
 import com.campusactivity.core.community.service.impl.CommunityinformationServiceImpl;
+import com.campusactivity.core.community.service.impl.CommunitymembersServiceImpl;
 import com.campusactivity.core.community.service.impl.PermissionServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -35,6 +37,8 @@ public class CommunityinformationController {
     private CommunityinformationServiceImpl communityinformationService;
     @Autowired
     private PermissionServiceImpl permissionService;
+    @Autowired
+    private CommunitymembersServiceImpl communitymembersService;
 
     @PostMapping("/search")
     public IPage<CIDTO> search(@RequestBody(required = false)  CIDTO dto) throws Exception{
@@ -42,6 +46,8 @@ public class CommunityinformationController {
         IPage<CIDTO> result = communityinformationService.search(page, dto);
         return result;
     }
+
+
 
     /**
      * 新增社团信息
@@ -57,10 +63,23 @@ public class CommunityinformationController {
         communityinformation.setUpdateUser(ContextUtil.getCurrentUserId());
         //保存社团信息
         communityinformationService.save(communityinformation);
-        Permission createUser=new Permission(ContextUtil.getCurrentUserId(),communityinformation.getId(),
+        Integer currentUserId = ContextUtil.getCurrentUserId();
+        Permission createUser=new Permission(currentUserId,communityinformation.getId(),
                 Constant.PRIVILEGELEVEL_ADMIN,communityinformation.getCommunityName()+"创始人");
         //添加创建人权限
         permissionService.save(createUser);
+        //添加社团成员表信息
+        Communitymembers cb=new Communitymembers();
+        cb.setUserId(currentUserId);
+        cb.setCommunityId(communityinformation.getId());
+        cb.setArrivalTime(new Date());
+        cb.setState("2");
+        cb.setPosition("社长");
+        cb.setCreateDate(new Date());
+        cb.setUpdateDate(new Date());
+        cb.setCreateUser(currentUserId);
+        cb.setUpdateUser(currentUserId);
+        communitymembersService.save(cb);
         return new CIDTO(communityinformation);
     }
 

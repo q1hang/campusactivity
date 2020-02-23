@@ -19,7 +19,9 @@ import java.util.List;
 public class WebConfiguration implements WebMvcConfigurer {
     private final static List<String> EXCLUDE_PATH = Arrays.asList(
             "/login/login",
-            "/test/test");
+            "/test/get",
+            "/test/post",
+            "/test/getAllUser");
     /**
      * 注册拦截器
      * @param registry  注册拦截器

@@ -1,6 +1,7 @@
 package com.campusactivity.core.login.controller;
 
 import com.campusactivity.common.exception.SSOLoginException;
+import com.campusactivity.common.util.ContextUtil;
 import com.campusactivity.common.util.JsonMapper;
 import com.campusactivity.common.util.JwtUtil;
 import com.campusactivity.common.util.RedisUtil;
@@ -29,6 +30,15 @@ public class loginController {
 
     @Autowired
     private SysUserServiceImpl sysUserService;
+
+    @GetMapping("authorization")
+    public Map<String, Object> authorization(){
+        String key = RedisUtil.KEY_PREFIX_EM + "_token_" + ContextUtil.getCurrentUserId();
+        RedisUtil.expire(key, 2, TimeUnit.HOURS);
+        Map<String, Object> result = new HashMap<>(1);
+        result.put("token",RedisUtil.hGet(key,"token"));
+        return result;
+    }
 
 
     @PostMapping("/login")

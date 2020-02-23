@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.campusactivity.core.activity.mapper.ActivityInfoMapper">
+
+
+    <select id="pageActivityinfo" resultType="com.campusactivity.core.activity.dto.AtInfoDTO">
+        select *
+        from activityInfo
+        <if test="ew != null and ew.sqlSegment != null">
+            where ${ew.sqlSegment}
+        </if>
+    </select>
+
+</mapper>

@@ -24,18 +24,22 @@ public class test {
     @Resource
     private SysUserMapper sysUserMapper;
 
-    @GetMapping("/test")
-    public String display(){
-        String hello = RedisUtil.get("hello");
-        if(hello==null||hello.length()==0){
-           return "redis没有这个值";
-        }
-        return hello;
+    @GetMapping("/get")
+    public String display(@RequestParam String str){
+
+        return str+"_get()";
     }
+
+    @PostMapping("post")
+    public String post(@RequestParam String str){
+        String result=str+"_post()";
+        return result;
+    }
+
+
 
     @GetMapping("getAllUser")
     public List<SysUser> getAllUser(){
-        List<SysUser> allUser = new ArrayList<>();
         return sysUserMapper.selectList(new QueryWrapper<>());
     }
 
