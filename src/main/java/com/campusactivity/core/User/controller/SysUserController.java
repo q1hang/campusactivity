@@ -30,11 +30,11 @@ public class SysUserController {
     @RequestMapping("/add")
     public String addAll(){
         String [] names={};
-        int studentId=4;
-        for(String name:names ){
-            SysUser temp=new SysUser(name,"123456",String.valueOf(studentId++));
-            sysUserService.save(temp);
-        }
+//        int studentId=4;
+//        for(String name:names ){
+//            SysUser temp=new SysUser(name,"123456",String.valueOf(studentId++));
+//            sysUserService.save(temp);
+//        }
         return "success";
     }
 }

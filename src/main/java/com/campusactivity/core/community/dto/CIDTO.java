@@ -30,10 +30,11 @@ public class CIDTO extends PageDTO {
      */
     private String type;
 
+
     /**
      * 发起人
      */
-    private Integer originator;
+    private String originator;
 
     /**
      * 宗旨
@@ -71,7 +72,6 @@ public class CIDTO extends PageDTO {
         this.id=cf.getId();
         this.communityName=cf.getCommunityName();
         this.contactsNumber=cf.getContactsNumber();
-        this.originator=cf.getOriginator();
         this.purpose=cf.getPurpose();
         this.type=cf.getType();
         this.createDate=cf.getCreateDate();

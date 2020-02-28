@@ -34,9 +34,15 @@ public class CMDTO extends PageDTO {
     private Integer userId;
 
     /**
+     * 用户名
+     */
+    private String userName;
+
+    /**
      * 社团ID
      */
     private Integer communityId;
+
 
     /**
      * 到达时间
@@ -71,12 +77,12 @@ public class CMDTO extends PageDTO {
     /**
      * 创建者
      */
-    private Integer createUser;
+    private String createUser;
 
     /**
      * 更新者
      */
-    private Integer updateUser;
+    private String updateUser;
 
     public CMDTO(Communitymembers communitymembers){
         this.id=communitymembers.getId();
@@ -88,7 +94,5 @@ public class CMDTO extends PageDTO {
         this.communitymemberscol=communitymembers.getCommunitymemberscol();
         this.createDate=communitymembers.getCreateDate();
         this.updateDate=communitymembers.getUpdateDate();
-        this.createUser=communitymembers.getCreateUser();
-        this.updateUser=communitymembers.getUpdateUser();
     }
 }

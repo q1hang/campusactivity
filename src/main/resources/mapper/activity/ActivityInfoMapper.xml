@@ -4,8 +4,11 @@
 
 
     <select id="pageActivityinfo" resultType="com.campusactivity.core.activity.dto.AtInfoDTO">
-        select *
-        from activityInfo
+        select
+        ai.*,
+        ci.CommunityName as community_name
+        from activityInfo ai
+        left join communityinformation ci on ai.community_id = ci.id
         <if test="ew != null and ew.sqlSegment != null">
             where ${ew.sqlSegment}
         </if>

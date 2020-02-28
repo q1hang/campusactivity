@@ -64,7 +64,7 @@ public class CommunitymembersServiceImpl extends ServiceImpl<CommunitymembersMap
     public void startProcess(Integer communityId) throws Exception{
         ProcessInstanceBuilder processInstanceBuilder = runtimeService.createProcessInstanceBuilder();
         //生成流程标识
-        String business=createProcessCode(communityId);
+        String business=createAMProcessCode(communityId);
         //判断历史数据以及当前流程中是否有重复的business
         HistoricProcessInstance historicProcessInstance = historyService.createHistoricProcessInstanceQuery().processInstanceBusinessKey(business).singleResult();
         if(historicProcessInstance!=null){
@@ -126,7 +126,12 @@ public class CommunitymembersServiceImpl extends ServiceImpl<CommunitymembersMap
         return new TaskDto(task);
     }
 
-    private String createProcessCode(Integer communityId){
+    /**
+     * 招新流程生成规则
+     * @param communityId
+     * @return
+     */
+    private String createAMProcessCode(Integer communityId){
         Integer userId=  ContextUtil.getCurrentUserId();
         String prefixCode = "AM" + communityId + "_" + userId;
         return prefixCode;
@@ -190,7 +195,7 @@ public class CommunitymembersServiceImpl extends ServiceImpl<CommunitymembersMap
     @Override
     public IPage<CMDTO> getCurrentMembers(Page page,Integer communityId) throws Exception {
         QueryWrapper<Communitymembers> wrapper = new QueryWrapper<>();
-        wrapper.eq("CommunityId", communityId);
+        wrapper.eq("cm.CommunityId", communityId);
         return communitymembersMapper.pageCommunitymem(page, wrapper);
     }
 }

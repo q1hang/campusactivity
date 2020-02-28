@@ -88,7 +88,6 @@ public class Communityinformation extends Model {
         this.CommunityName=dto.getCommunityName();
         this.ContactsNumber=dto.getContactsNumber();
         this.type=dto.getType();
-        this.Originator=dto.getOriginator();
         this.Purpose=dto.getPurpose();
     }
 }

@@ -6,15 +6,16 @@
 
     <select id="pageCommunityinfo" resultType="com.campusactivity.core.community.dto.CIDTO">
     select
-    id,
-    CommunityName as community_name,
-    type as type,
-    Originator as originator,
-    Purpose as purpose,
-    ContactsNumber as contacts_number,
-    CreateDate as create_date,
-    UpdateDate as update_date
-    from communityinformation
+    ci.id,
+    ci.CommunityName as community_name,
+    ci.type as type,
+    su.username as originator,
+    ci.Purpose as purpose,
+    ci.ContactsNumber as contacts_number,
+    ci.CreateDate as create_date,
+    ci.UpdateDate as update_date
+    from communityinformation ci
+    left join sys_user su on ci.Originator = su.id
     <if test="ew != null and ew.sqlSegment != null">
         where ${ew.sqlSegment}
     </if>

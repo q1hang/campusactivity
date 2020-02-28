@@ -37,7 +37,7 @@ public class CommunityinformationServiceImpl extends ServiceImpl<Communityinform
         Integer id = dto.getId();
         String communityName = dto.getCommunityName();
         String contactsNumber = dto.getContactsNumber();
-        Integer originator = dto.getOriginator();
+        String originator = dto.getOriginator();
         String purpose = dto.getPurpose();
         String type = dto.getType();
         Date createDate = dto.getCreateDate();
@@ -45,15 +45,15 @@ public class CommunityinformationServiceImpl extends ServiceImpl<Communityinform
         Date updateDate = dto.getUpdateDate();
         Integer updateUser = dto.getUpdateUser();
 
-        wrapper.eq(id!=null,"id",id)
-                .like(StringUtils.isNotBlank(communityName),"CommunityName",communityName)
-                .like(StringUtils.isNotBlank(contactsNumber),"ContactsNumber",contactsNumber)
-                .eq(originator!=null,"Originator",originator)
-                .like(StringUtils.isNotBlank(purpose),"Purpose",purpose)
-                .eq(StringUtils.isNotBlank(type),"type",type)
-                .between(createDate!=null,"CreateDate",
+        wrapper.eq(id!=null,"ci.id",id)
+                .like(StringUtils.isNotBlank(communityName),"ci.CommunityName",communityName)
+                .like(StringUtils.isNotBlank(contactsNumber),"ci.ContactsNumber",contactsNumber)
+                .like(StringUtils.isNotBlank(originator),"su.username",originator)
+                .like(StringUtils.isNotBlank(purpose),"ci.Purpose",purpose)
+                .eq(StringUtils.isNotBlank(type),"ci.type",type)
+                .between(createDate!=null,"ci.CreateDate",
                         DateUtils.toMinDay(createDate),DateUtils.toMaxDay(createDate))
-                .between(updateDate!=null,"UpdateDate",
+                .between(updateDate!=null,"ci.UpdateDate",
                         DateUtils.toMinDay(updateDate),DateUtils.toMaxDay(updateDate))
         //TODO 用户人搜索
         ;

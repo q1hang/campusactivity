@@ -32,6 +32,7 @@ public class ActivityInfoServiceImpl extends ServiceImpl<ActivityInfoMapper, Act
     @Override
     public IPage<AtInfoDTO> search(Page page, AtInfoDTO dto) throws Exception {
         String activityIntroduce = dto.getActivityIntroduce();
+        String communityName = dto.getCommunityName();
         String activityName = dto.getActivityName();
         String address = dto.getAddress();
         String type = dto.getType();
@@ -43,21 +44,22 @@ public class ActivityInfoServiceImpl extends ServiceImpl<ActivityInfoMapper, Act
 
 
         QueryWrapper<ActivityInfo> wrapper=new QueryWrapper<>();
-        wrapper.like(StringUtils.isNotBlank(activityName),"activity_name",activityName)
-                .like(StringUtils.isNotBlank(activityIntroduce),"activity_introduce",activityIntroduce)
-                .like(StringUtils.isNotBlank(address),"address",address)
-                .like(StringUtils.isNotBlank(type),"type",type)
-                .eq(manager!=null,"manager",manager);
+        wrapper.like(StringUtils.isNotBlank(activityName),"ai.activity_name",activityName)
+                .like(StringUtils.isNotBlank(activityIntroduce),"ai.activity_introduce",activityIntroduce)
+                .like(StringUtils.isNotBlank(address),"ai.address",address)
+                .like(StringUtils.isNotBlank(type),"ai.type",type)
+                .like(StringUtils.isNotBlank(communityName),"ci.CommunityName",communityName)
+                .eq(manager!=null,"ai.manager",manager);
         if(registrationTime!=null&&registrationDeadline!=null){
-            wrapper.between("registration_time",
+            wrapper.between("ai.registration_time",
                     DateUtils.toMinDay(registrationTime),DateUtils.toMaxDay(registrationDeadline))
-                    .between("registration_deadline",
+                    .between("ai.registration_deadline",
                             DateUtils.toMinDay(registrationTime),DateUtils.toMaxDay(registrationDeadline));
         }
         if(startTime!=null&&endTime!=null){
-            wrapper.between("start_time",
+            wrapper.between("ai.start_time",
                     DateUtils.toMinDay(startTime),DateUtils.toMaxDay(endTime))
-                    .between("end_time",
+                    .between("ai.end_time",
                     DateUtils.toMinDay(startTime),DateUtils.toMaxDay(endTime));
         }
         IPage<AtInfoDTO> atInfoDTOIPage = activityInfoMapper.pageActivityinfo(page, wrapper);

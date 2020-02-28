@@ -57,6 +57,8 @@ public class CommunityinformationController {
     @PostMapping("/save")
     public CIDTO save(@RequestBody CIDTO dto){
         Communityinformation communityinformation = new Communityinformation(dto);
+        //当前发起人
+        communityinformation.setOriginator(ContextUtil.getCurrentUserId());
         communityinformation.setCreateDate(new Date());
         communityinformation.setUpdateDate(new Date());
         communityinformation.setCreateUser(ContextUtil.getCurrentUserId());

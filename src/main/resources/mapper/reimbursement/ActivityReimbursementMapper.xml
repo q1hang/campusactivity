@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.campusactivity.core.reimbursement.mapper.ActivityReimbursementMapper">
+
+
+    <select id="getReimbursementCode" parameterType="string" resultType="string">
+        select reimbursement_code
+        from activity_reimbursement
+        where delete_status = 0
+        <if test="prefixCode != null and prefixCode !=''  ">
+            and reimbursement_code like concat('%',#{prefixCode},'%')
+        </if>
+        order by id desc
+        limit 1
+    </select>
+
+    <select id="pageReimbursementList" resultType="com.campusactivity.core.reimbursement.dto.ReimbursementDTO">
+        select
+        ac.id,
+        ac.reimbursement_code,
+        ac.activity_id,
+        ac.community_id,
+        ai.activity_name,
+        ci.CommunityName as community_name,
+        ac.transaction_mode,
+        ac.attach_id,
+        ac.total_amount,
+        ac.status,
+        ac.CreateDate as create_date,
+        ac.UpdateDate as update_date,
+        su.username as create_user
+        from activity_reimbursement ac
+        left join activityInfo ai on ai.id = ac.activity_id
+        left join communityinformation ci on ci.id = ac.community_id
+        left join sys_user su on ac.CreateUser = su.id
+        <if test="ew != null and ew.sqlSegment != null">
+            where ${ew.sqlSegment}
+        </if>
+
+    </select>
+</mapper>

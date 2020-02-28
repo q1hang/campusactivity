@@ -5,18 +5,22 @@
 
     <select id="pageCommunitymem" resultType="com.campusactivity.core.community.dto.CMDTO">
         select
-        id,
-        CommunityId as community_id,
-        UserId as user_id,
-        ArrivalTime as arrival_time,
-        state as state,
-        position as position,
-        communitymemberscol as communitymemberscol,
-        CreateDate as create_date,
-        UpdateDate as update_date,
-        CreateUser as create_user,
-        UpdateUser as update_user
-        from communitymembers
+        cm.id,
+        cm.CommunityId as community_id,
+        cm.UserId as user_id,
+        su.username as user_name,
+        cm.ArrivalTime as arrival_time,
+        cm.state as state,
+        cm.position as position,
+        cm.communitymemberscol as communitymemberscol,
+        cm.CreateDate as create_date,
+        cm.UpdateDate as update_date,
+        su1.username as create_user,
+        su2.username as update_user
+        from communitymembers cm
+        left join sys_user su on cm.UserId = su.id
+        left join sys_user su1 on cm.CreateUser = su1.id
+        left join sys_user su2 on cm.UpdateUser = su2.id
         <if test="ew != null and ew.sqlSegment != null">
             where ${ew.sqlSegment}
         </if>

@@ -83,17 +83,6 @@ public class CommunitymembersController {
         return "success";
     }
 
-    /**
-     * 根据流程标识查询当前流程进度
-     * @param business
-     * @return
-     */
-    @GetMapping("selectProcess/{business}")
-    public TaskDto selectProcess(@PathVariable String business){
-        Task task = taskService.createTaskQuery().processInstanceBusinessKey(business).singleResult();
-        return task==null?null:new TaskDto(task).pending();
-    }
-
 
     @GetMapping("/getAlreadyJoined")
     public List<CIDTO> getAlreadyJoined() throws Exception{

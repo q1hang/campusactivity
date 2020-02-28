@@ -1,12 +1,17 @@
 package com.campusactivity.core.User.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
-import com.baomidou.mybatisplus.annotation.TableField;
+import com.campusactivity.core.User.dto.UserInfoDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
+
+import java.time.LocalDate;
+import java.util.Date;
 
 /**
  * <p>
@@ -14,15 +19,17 @@ import lombok.experimental.Accessors;
  * </p>
  *
  * @author qihang
- * @since 2020-01-14
+ * @since 2020-02-25
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
+@NoArgsConstructor
 @AllArgsConstructor
 public class SysUser extends Model {
 
     private static final long serialVersionUID = 1L;
+
 
     @TableId
     private Integer id;
@@ -54,10 +61,54 @@ public class SysUser extends Model {
      */
     private String remarks;
 
+    /**
+     * 联系方式
+     */
+    private String telphone;
 
-    public SysUser(String username,String password,String studentId){
-        this.username=username;
-        this.password=password;
-        this.studentId=studentId;
+    /**
+     * 性别
+     */
+    private Integer sex;
+
+    /**
+     * qq号
+     */
+    private String qq;
+
+    /**
+     * 微信号
+     */
+    private String wechat;
+
+    /**
+     * 年龄
+     */
+    private Integer age;
+
+    /**
+     * 邮箱
+     */
+    private String email;
+
+    /**
+     * 出生日期
+     */
+    private Date birth;
+
+    public SysUser(UserInfoDTO dto){
+        this.id=dto.getId();
+        this.username=dto.getUsername();
+        this.studentId=dto.getStudentId();
+        this.gradeId=dto.getGradeId();
+        this.remarks=dto.getRemarks();
+        this.telphone=dto.getTelphone();
+        this.age=dto.getAge();
+        this.sex=dto.getSex();
+        this.qq=dto.getQq();
+        this.wechat=dto.getWechat();
+        this.email=dto.getEmail();
     }
+
+
 }

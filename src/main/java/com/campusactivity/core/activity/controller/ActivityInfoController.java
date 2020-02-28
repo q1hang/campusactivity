@@ -5,13 +5,17 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.campusactivity.common.util.ContextUtil;
+import com.campusactivity.common.util.PoiUtil;
 import com.campusactivity.core.activity.dto.AtInfoDTO;
 import com.campusactivity.core.activity.entity.ActivityInfo;
 import com.campusactivity.core.activity.service.impl.ActivityInfoServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -39,6 +43,15 @@ public class ActivityInfoController {
         Page page = new Page(dto.getPageNum(), dto.getPageSize());
         IPage<AtInfoDTO> result = activityInfoService.search(page, dto);
         return result;
+    }
+
+    @GetMapping("execl")
+    public void textExecl(HttpServletResponse response){
+        List<ActivityInfo> list = activityInfoService.list();
+        List<AtInfoDTO> result = list.stream().map(x -> {
+            return new AtInfoDTO(x);
+        }).collect(Collectors.toList());
+        PoiUtil.writeExcel(response,result,AtInfoDTO.class,"所有活动信息");
     }
 
     /**
