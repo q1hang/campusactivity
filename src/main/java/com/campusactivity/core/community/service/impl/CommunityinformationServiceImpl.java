@@ -40,10 +40,7 @@ public class CommunityinformationServiceImpl extends ServiceImpl<Communityinform
         String originator = dto.getOriginator();
         String purpose = dto.getPurpose();
         String type = dto.getType();
-        Date createDate = dto.getCreateDate();
-        Integer createUser = dto.getCreateUser();
-        Date updateDate = dto.getUpdateDate();
-        Integer updateUser = dto.getUpdateUser();
+        List<String> createDateList = dto.getCreateDateList();
 
         wrapper.eq(id!=null,"ci.id",id)
                 .like(StringUtils.isNotBlank(communityName),"ci.CommunityName",communityName)
@@ -51,12 +48,12 @@ public class CommunityinformationServiceImpl extends ServiceImpl<Communityinform
                 .like(StringUtils.isNotBlank(originator),"su.username",originator)
                 .like(StringUtils.isNotBlank(purpose),"ci.Purpose",purpose)
                 .eq(StringUtils.isNotBlank(type),"ci.type",type)
-                .between(createDate!=null,"ci.CreateDate",
-                        DateUtils.toMinDay(createDate),DateUtils.toMaxDay(createDate))
-                .between(updateDate!=null,"ci.UpdateDate",
-                        DateUtils.toMinDay(updateDate),DateUtils.toMaxDay(updateDate))
-        //TODO 用户人搜索
         ;
+        if (createDateList != null && !createDateList.isEmpty() && createDateList.size() > 1) {
+            Long startDate = DateUtils.stringToTimeStamp(createDateList.get(0),DateUtils.DATE_PATTERN,false);
+            Long endDate = DateUtils.stringToTimeStamp(createDateList.get(1),DateUtils.DATE_PATTERN,false);
+            wrapper.between("ci.CreateDate", DateUtils.toDayMinTime(startDate.toString()), DateUtils.toDayMaxTime(endDate.toString()));
+        }
 
         IPage<CIDTO> result = communityinformationMapper.pageCommunityinfo(page, wrapper);
         return result;

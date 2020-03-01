@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.campusactivity.common.util.Constant;
 import com.campusactivity.common.util.ContextUtil;
+import com.campusactivity.common.util.PoiUtil;
 import com.campusactivity.core.community.dto.CIDTO;
 import com.campusactivity.core.community.entity.Communityinformation;
 import com.campusactivity.core.community.entity.Communitymembers;
@@ -17,6 +18,7 @@ import com.campusactivity.core.community.service.impl.PermissionServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -105,6 +107,14 @@ public class CommunityinformationController {
     public void delete(@RequestParam Integer id){
         communityinformationService.removeById(id);
         //利用逻辑删除
+    }
+
+    @GetMapping("/export")
+    public void export(HttpServletResponse response) throws Exception{
+        Page page = new Page(1, 10000);
+        IPage<CIDTO> list = communityinformationService.search(page, new CIDTO());
+        List<CIDTO> result = list.getRecords();
+        PoiUtil.writeExcel(response,result,CIDTO.class,"所有社团信息");
     }
 }
 

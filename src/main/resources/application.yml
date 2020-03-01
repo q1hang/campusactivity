@@ -43,8 +43,8 @@ spring:
         #allow: 127.0.0.1 #可访问白名单
         #deny: 192.168.1.1 #拒绝地址 优先级高于 allow
         url-pattern: "/druid/*"
-        login-username: admin
-        login-password: oppein@123
+        login-username:
+        login-password:
         reset-enable: true #页面中的reset all 可否使用
 
   redis:

@@ -95,6 +95,13 @@ public class CommunitymembersController {
         return communitymembersService.getCurrentMembers(page,dto.getCommunityId());
     }
 
+    @GetMapping("/getMyToDo")
+    public List<TaskDto> getMyToDo(@RequestParam Integer community){
+
+
+        return null;
+    }
+
 
 }
 

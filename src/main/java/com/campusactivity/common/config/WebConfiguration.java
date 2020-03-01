@@ -23,7 +23,8 @@ public class WebConfiguration implements WebMvcConfigurer {
             "/test/post",
             "/test/getAllUser",
             "/activity/activityInfo/execl",
-            "/activity/activityInfo/search");
+            "/activity/activityInfo/search",
+            "/community/communityinformation/export");
     /**
      * 注册拦截器
      * @param registry  注册拦截器
