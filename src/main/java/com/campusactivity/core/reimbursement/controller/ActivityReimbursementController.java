@@ -8,11 +8,9 @@ import com.campusactivity.core.reimbursement.dto.ProcessDTO;
 import com.campusactivity.core.reimbursement.dto.ReimbursementDTO;
 import com.campusactivity.core.reimbursement.service.impl.ActivityReimbursementServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
-import org.springframework.web.bind.annotation.RestController;
+import java.util.List;
 
 /**
  * <p>
@@ -43,6 +41,11 @@ public class ActivityReimbursementController {
     public IPage<ReimbursementDTO> search(@RequestBody ReimbursementDTO dto) throws Exception{
         Page page=new Page(dto.getPageNum(),dto.getPageSize());
         return activityReimbursementService.pageReimbursementList(page, dto);
+    }
+
+    @GetMapping("getMyToDo")
+    public List<ReimbursementDTO> getMyToDo(@RequestParam Integer community){
+        return activityReimbursementService.getMyToDoOfCM(community);
     }
 
 }

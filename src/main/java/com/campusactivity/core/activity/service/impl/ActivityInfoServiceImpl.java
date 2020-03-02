@@ -32,6 +32,7 @@ public class ActivityInfoServiceImpl extends ServiceImpl<ActivityInfoMapper, Act
     @Override
     public IPage<AtInfoDTO> search(Page page, AtInfoDTO dto) throws Exception {
         String activityIntroduce = dto.getActivityIntroduce();
+        Integer communityId=dto.getCommunityId();
         String communityName = dto.getCommunityName();
         String activityName = dto.getActivityName();
         String address = dto.getAddress();
@@ -49,7 +50,10 @@ public class ActivityInfoServiceImpl extends ServiceImpl<ActivityInfoMapper, Act
                 .like(StringUtils.isNotBlank(address),"ai.address",address)
                 .like(StringUtils.isNotBlank(type),"ai.type",type)
                 .like(StringUtils.isNotBlank(communityName),"ci.CommunityName",communityName)
-                .eq(manager!=null,"ai.manager",manager);
+                .eq(manager!=null,"ai.manager",manager)
+                .eq(communityId!=null,"ai.community_id",communityId)
+        ;
+
         if(registrationTime!=null&&registrationDeadline!=null){
             wrapper.between("ai.registration_time",
                     DateUtils.toMinDay(registrationTime),DateUtils.toMaxDay(registrationDeadline))

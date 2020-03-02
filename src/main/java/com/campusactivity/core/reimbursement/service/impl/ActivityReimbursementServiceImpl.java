@@ -19,6 +19,7 @@ import com.campusactivity.core.reimbursement.entity.ActivityReimbursement;
 import com.campusactivity.core.reimbursement.mapper.ActivityReimbursementMapper;
 import com.campusactivity.core.reimbursement.service.IActivityReimbursementService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.google.common.collect.Lists;
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
@@ -72,6 +73,35 @@ public class ActivityReimbursementServiceImpl extends ServiceImpl<ActivityReimbu
     private ActivityCostServiceImpl activityCostService;
     @Resource
     private ActivityReimbursementMapper activityReimbursementMapper;
+
+
+    /**
+     * 获取某个社团的所有报销单待办
+     * @param communityId
+     * @return
+     */
+    @Override
+    public List<ReimbursementDTO> getMyToDoOfCM(Integer communityId) {
+        //TODO  身份验证
+
+        String business="%MK%";
+        List<Task> taskList = taskService.createTaskQuery().processInstanceBusinessKeyLikeIgnoreCase(business).list();
+        List<String[]> collect = taskList.stream().map(x -> {
+            String[] a=new String[2];
+            a[0]=runtimeService.createProcessInstanceQuery().processInstanceId(x.getProcessInstanceId()).singleResult().getBusinessKey();
+            a[1]=x.getName();
+            return a;
+        }).collect(Collectors.toList());
+
+        List<ReimbursementDTO> result= Lists.newArrayList();
+        collect.forEach(x->{
+            ActivityReimbursement one = this.getOne(new QueryWrapper<ActivityReimbursement>().eq("reimbursement_code", x[0]));
+            ReimbursementDTO reimbursementDTO = new ReimbursementDTO(one);
+            reimbursementDTO.setNodeName(x[1]);
+            result.add(reimbursementDTO);
+        });
+        return result;
+    }
 
     @Override
     public IPage<ReimbursementDTO> pageReimbursementList(Page page, ReimbursementDTO dto) throws Exception {

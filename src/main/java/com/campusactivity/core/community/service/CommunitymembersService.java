@@ -21,13 +21,15 @@ import java.util.List;
 public interface CommunitymembersService extends IService<Communitymembers> {
 
 
-    public void startProcess(Integer CommunityId) throws Exception;
+     void startProcess(Integer CommunityId) throws Exception;
 
-    public TaskDto approval(String business,String opinion);
+     TaskDto approval(String business,String opinion);
 
 
-    public List<CIDTO> getAlreadyJoined() throws Exception;
+     List<CIDTO> getAlreadyJoined() throws Exception;
 
-    public IPage<CMDTO> getCurrentMembers(Page page,Integer communityId) throws Exception;
+     IPage<CMDTO> getCurrentMembers(Page page,Integer communityId) throws Exception;
+
+    List<CMDTO> getMyToDoOfCM(Integer communityId);
 
 }

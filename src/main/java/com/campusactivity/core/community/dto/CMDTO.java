@@ -84,6 +84,11 @@ public class CMDTO extends PageDTO {
      */
     private String updateUser;
 
+    /**
+     * 面试节点
+     */
+    private String taskName;
+
     public CMDTO(Communitymembers communitymembers){
         this.id=communitymembers.getId();
         this.userId=communitymembers.getUserId();

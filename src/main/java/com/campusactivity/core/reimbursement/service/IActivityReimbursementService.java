@@ -8,6 +8,8 @@ import com.campusactivity.core.reimbursement.dto.ReimbursementDTO;
 import com.campusactivity.core.reimbursement.entity.ActivityReimbursement;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
  * <p>
  * 活动报销表 服务类
@@ -26,4 +28,5 @@ public interface IActivityReimbursementService extends IService<ActivityReimburs
 
     IPage<ReimbursementDTO> pageReimbursementList(Page page,ReimbursementDTO dto) throws Exception;
 
+    List<ReimbursementDTO> getMyToDoOfCM(Integer communityId);
 }

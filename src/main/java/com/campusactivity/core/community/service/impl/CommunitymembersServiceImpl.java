@@ -16,6 +16,8 @@ import com.campusactivity.core.community.entity.ProcessStatus;
 import com.campusactivity.core.community.mapper.CommunitymembersMapper;
 import com.campusactivity.core.community.service.CommunitymembersService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.google.common.collect.Lists;
+import jodd.util.CollectionUtil;
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
@@ -23,6 +25,7 @@ import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.runtime.ProcessInstanceBuilder;
 import org.activiti.engine.task.Task;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -197,5 +200,38 @@ public class CommunitymembersServiceImpl extends ServiceImpl<CommunitymembersMap
         QueryWrapper<Communitymembers> wrapper = new QueryWrapper<>();
         wrapper.eq("cm.CommunityId", communityId);
         return communitymembersMapper.pageCommunitymem(page, wrapper);
+    }
+
+    /**
+     * 获取某个社团的所有待办
+     * @param communityId
+     * @return
+     */
+    public List<CMDTO> getMyToDoOfCM(Integer communityId){
+        //TODO 身份验证
+        String business="%AM"+communityId.toString()+"_%";
+        List<Task> taskList = taskService.createTaskQuery().processInstanceBusinessKeyLikeIgnoreCase(business).list();
+        List<String[]> collect = taskList.stream().map(x -> {
+            String[] a=new String[2];
+            a[0]=runtimeService.createProcessInstanceQuery().processInstanceId(x.getProcessInstanceId()).singleResult().getBusinessKey();
+            a[1]=x.getName();
+            return a;
+        }).collect(Collectors.toList());
+
+        List<CMDTO> result= Lists.newArrayList();
+
+        collect.forEach(businesstmp->{
+            int i = businesstmp[0].indexOf("_");
+            String communityId1 = businesstmp[0].substring(2,i);
+            String userId1 = businesstmp[0].substring(i+1);
+            Communitymembers one = getOne(new QueryWrapper<Communitymembers>()
+                    .eq("UserId", Integer.valueOf(userId1))
+                    .eq("CommunityId", Integer.valueOf(communityId1)));
+            CMDTO cmdto = new CMDTO(one);
+            cmdto.setTaskName(businesstmp[1]);
+            result.add(cmdto);
+        });
+
+        return result;
     }
 }

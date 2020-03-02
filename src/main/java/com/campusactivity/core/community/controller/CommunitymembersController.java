@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.campusactivity.common.exception.CustomException;
 import com.campusactivity.common.exception.ParamException;
+import com.campusactivity.common.util.ContextUtil;
 import com.campusactivity.core.community.dto.CIDTO;
 import com.campusactivity.core.community.dto.CMDTO;
 import com.campusactivity.core.community.dto.TaskDto;
@@ -56,6 +57,7 @@ public class CommunitymembersController {
             throw new CustomException("你已存在该社团");
         }
         Communitymembers communitymembers = new Communitymembers(dto);
+        communitymembers.setUserId(ContextUtil.getCurrentUserId());
         communitymembers.setArrivalTime(new Date());
         //发起审批流程
         communitymembersService.startProcess(dto.getCommunityId());
@@ -96,10 +98,8 @@ public class CommunitymembersController {
     }
 
     @GetMapping("/getMyToDo")
-    public List<TaskDto> getMyToDo(@RequestParam Integer community){
-
-
-        return null;
+    public List<CMDTO> getMyToDo(@RequestParam Integer community){
+        return communitymembersService.getMyToDoOfCM(community);
     }
 
 

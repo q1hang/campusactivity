@@ -98,6 +98,7 @@ public class ReimbursementDTO extends PageDTO {
      */
     private String nodeName;
 
+
     public ReimbursementDTO(ActivityReimbursement entity){
         this.id=entity.getId();
         this.reimbursementCode=entity.getReimbursementCode();
