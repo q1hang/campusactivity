@@ -48,5 +48,10 @@ public class ActivityReimbursementController {
         return activityReimbursementService.getMyToDoOfCM(community);
     }
 
+    @PostMapping("delete")
+    public void deleteReimbursement(@RequestParam Integer id){
+         activityReimbursementService.deleteReimbursement(id);
+    }
+
 }
 

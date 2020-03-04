@@ -53,7 +53,7 @@ public class CommunitymembersController {
     @PostMapping("/addMember")
     public CMDTO addMenber(@RequestBody CMDTO dto) throws Exception{
         //判断是否已在这个社团
-        if(communitymembersService.checkIsExist(dto.getUserId(),dto.getCommunityId())){
+        if(communitymembersService.checkIsExist(ContextUtil.getCurrentUserId(),dto.getCommunityId())){
             throw new CustomException("你已存在该社团");
         }
         Communitymembers communitymembers = new Communitymembers(dto);

@@ -66,6 +66,9 @@ public class ActivityInfoServiceImpl extends ServiceImpl<ActivityInfoMapper, Act
                     .between("ai.end_time",
                     DateUtils.toMinDay(startTime),DateUtils.toMaxDay(endTime));
         }
+        if(startTime==null&&endTime!=null){
+            wrapper.lt("ai.end_time",endTime);
+        }
         IPage<AtInfoDTO> atInfoDTOIPage = activityInfoMapper.pageActivityinfo(page, wrapper);
 
         return atInfoDTOIPage;

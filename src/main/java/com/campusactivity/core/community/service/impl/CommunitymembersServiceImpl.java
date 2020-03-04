@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.campusactivity.common.exception.CustomException;
 import com.campusactivity.common.exception.NullTaskException;
 import com.campusactivity.common.util.ContextUtil;
+import com.campusactivity.core.User.entity.SysUser;
+import com.campusactivity.core.User.service.impl.SysUserServiceImpl;
 import com.campusactivity.core.community.dto.CIDTO;
 import com.campusactivity.core.community.dto.CMDTO;
 import com.campusactivity.core.community.dto.TaskDto;
@@ -16,6 +18,10 @@ import com.campusactivity.core.community.entity.ProcessStatus;
 import com.campusactivity.core.community.mapper.CommunitymembersMapper;
 import com.campusactivity.core.community.service.CommunitymembersService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.campusactivity.core.reimbursement.dto.CostDTO;
+import com.campusactivity.core.reimbursement.dto.ReimbursementDTO;
+import com.campusactivity.core.reimbursement.entity.ActivityCost;
+import com.campusactivity.core.reimbursement.entity.ActivityReimbursement;
 import com.google.common.collect.Lists;
 import jodd.util.CollectionUtil;
 import org.activiti.engine.HistoryService;
@@ -62,6 +68,8 @@ public class CommunitymembersServiceImpl extends ServiceImpl<CommunitymembersMap
     private CommunityinformationServiceImpl communityinformationService;
     @Resource
     private CommunitymembersMapper communitymembersMapper;
+    @Autowired
+    private SysUserServiceImpl sysUserService;
 
     @Override
     public void startProcess(Integer communityId) throws Exception{
@@ -210,6 +218,15 @@ public class CommunitymembersServiceImpl extends ServiceImpl<CommunitymembersMap
     public List<CMDTO> getMyToDoOfCM(Integer communityId){
         //TODO 身份验证
         String business="%AM"+communityId.toString()+"_%";
+        return likeBusiness(business);
+    }
+
+    /**
+     * 根据business模糊搜索招新流程
+     * @param business
+     * @return
+     */
+    public List<CMDTO> likeBusiness(String business){
         List<Task> taskList = taskService.createTaskQuery().processInstanceBusinessKeyLikeIgnoreCase(business).list();
         List<String[]> collect = taskList.stream().map(x -> {
             String[] a=new String[2];
@@ -217,9 +234,7 @@ public class CommunitymembersServiceImpl extends ServiceImpl<CommunitymembersMap
             a[1]=x.getName();
             return a;
         }).collect(Collectors.toList());
-
         List<CMDTO> result= Lists.newArrayList();
-
         collect.forEach(businesstmp->{
             int i = businesstmp[0].indexOf("_");
             String communityId1 = businesstmp[0].substring(2,i);
@@ -228,10 +243,19 @@ public class CommunitymembersServiceImpl extends ServiceImpl<CommunitymembersMap
                     .eq("UserId", Integer.valueOf(userId1))
                     .eq("CommunityId", Integer.valueOf(communityId1)));
             CMDTO cmdto = new CMDTO(one);
+            SysUser user = sysUserService.getById(userId1);
+            cmdto.setStudentId(user.getStudentId());
+            cmdto.setGradeId(user.getGradeId());
+            cmdto.setSex(user.getSex());
+            cmdto.setUserName(user.getUsername());
+            cmdto.setCommunitymemberscol(user.getTelphone());
             cmdto.setTaskName(businesstmp[1]);
             result.add(cmdto);
         });
-
         return result;
     }
+
+
+
+
 }

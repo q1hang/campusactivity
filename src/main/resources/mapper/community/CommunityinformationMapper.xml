@@ -19,6 +19,7 @@
     <if test="ew != null and ew.sqlSegment != null">
         where ${ew.sqlSegment}
     </if>
+    order by ci.id desc
 
     </select>
 </mapper>

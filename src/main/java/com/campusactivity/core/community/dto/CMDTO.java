@@ -89,6 +89,21 @@ public class CMDTO extends PageDTO {
      */
     private String taskName;
 
+    /**
+     * 学号
+     */
+    private String studentId;
+
+    /**
+     * 年级号
+     */
+    private String gradeId;
+
+    /**
+     * 性别(0女,1男)
+     */
+    private Integer sex;
+
     public CMDTO(Communitymembers communitymembers){
         this.id=communitymembers.getId();
         this.userId=communitymembers.getUserId();

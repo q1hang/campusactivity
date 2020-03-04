@@ -29,4 +29,6 @@ public interface IActivityReimbursementService extends IService<ActivityReimburs
     IPage<ReimbursementDTO> pageReimbursementList(Page page,ReimbursementDTO dto) throws Exception;
 
     List<ReimbursementDTO> getMyToDoOfCM(Integer communityId);
+
+    void deleteReimbursement(Integer id);
 }

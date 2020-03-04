@@ -6,6 +6,9 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.campusactivity.common.exception.CustomException;
 import com.campusactivity.common.exception.NullTaskException;
 import com.campusactivity.common.util.ContextUtil;
+import com.campusactivity.core.User.entity.SysUser;
+import com.campusactivity.core.User.service.impl.SysUserServiceImpl;
+import com.campusactivity.core.activity.service.impl.ActivityInfoServiceImpl;
 import com.campusactivity.core.community.dto.TaskDto;
 import com.campusactivity.core.community.entity.Permission;
 import com.campusactivity.core.community.entity.ProcessStatus;
@@ -73,6 +76,11 @@ public class ActivityReimbursementServiceImpl extends ServiceImpl<ActivityReimbu
     private ActivityCostServiceImpl activityCostService;
     @Resource
     private ActivityReimbursementMapper activityReimbursementMapper;
+    @Autowired
+    private SysUserServiceImpl sysUserService;
+    @Autowired
+    private ActivityInfoServiceImpl activityInfoService;
+
 
 
     /**
@@ -94,12 +102,44 @@ public class ActivityReimbursementServiceImpl extends ServiceImpl<ActivityReimbu
         }).collect(Collectors.toList());
 
         List<ReimbursementDTO> result= Lists.newArrayList();
+
         collect.forEach(x->{
-            ActivityReimbursement one = this.getOne(new QueryWrapper<ActivityReimbursement>().eq("reimbursement_code", x[0]));
-            ReimbursementDTO reimbursementDTO = new ReimbursementDTO(one);
-            reimbursementDTO.setNodeName(x[1]);
-            result.add(reimbursementDTO);
+            ActivityReimbursement one = this.getOne(new QueryWrapper<ActivityReimbursement>().eq("reimbursement_code", x[0])
+            .eq("community_id",communityId));
+            if(one!=null){
+                ReimbursementDTO reimbursementDTO = new ReimbursementDTO(one);
+                reimbursementDTO.setCreateUser(sysUserService.getById(one.getCreateUser()).getUsername());
+                reimbursementDTO.setActivityName(activityInfoService.getById(one.getActivityId()).getActivityName());
+                List<ActivityCost> costs = activityCostService.list(new QueryWrapper<ActivityCost>().eq("reimbursement_id", one.getId()));
+                reimbursementDTO.setCostList(costs.stream().map(y -> {
+                    return new CostDTO(y);
+                }).collect(Collectors.toList()));
+                reimbursementDTO.setNodeName(x[1]);
+                result.add(reimbursementDTO);
+            }
         });
+        return result;
+    }
+
+    public List<ReimbursementDTO> getMyToDo(){
+        List<ActivityReimbursement> list = list(new QueryWrapper<ActivityReimbursement>()
+                .eq("CreateUser", ContextUtil.getCurrentUserId())
+                .eq("status", 1)
+                .eq("delete_status", DELETE_STATUS_NORMAL));
+
+        List<ReimbursementDTO> result = list.stream().map(x -> {
+            Task task = taskService.createTaskQuery().processInstanceBusinessKey(x.getReimbursementCode()).singleResult();
+            ReimbursementDTO dto = new ReimbursementDTO(x);
+            dto.setNodeName(task.getName());
+            dto.setCreateUser(sysUserService.getById(ContextUtil.getCurrentUserId()).getUsername());
+            dto.setActivityName(activityInfoService.getById(x.getActivityId()).getActivityName());
+            List<ActivityCost> costs = activityCostService.list(new QueryWrapper<ActivityCost>().eq("reimbursement_id", x.getId()));
+            dto.setCostList(costs.stream().map(y -> {
+                return new CostDTO(y);
+            }).collect(Collectors.toList()));
+            return dto;
+        }).collect(Collectors.toList());
+
         return result;
     }
 
@@ -309,4 +349,10 @@ public class ActivityReimbursementServiceImpl extends ServiceImpl<ActivityReimbu
         }
     }
 
+    @Override
+    public void deleteReimbursement(Integer id) {
+        ActivityReimbursement entity = new ActivityReimbursement();
+        entity.setDeleteStatus("1");
+        update(entity,new QueryWrapper<ActivityReimbursement>().eq("id",id));
+    }
 }

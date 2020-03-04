@@ -1,12 +1,13 @@
 package com.campusactivity.core.User.controller;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.campusactivity.common.util.ContextUtil;
+import com.campusactivity.core.User.dto.UserInfoDTO;
 import com.campusactivity.core.User.entity.SysUser;
 import com.campusactivity.core.User.service.impl.SysUserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * <p>
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2020-01-14
  */
 @RestController
-@RequestMapping("/User/sys-user")
+@RequestMapping("/user")
 public class SysUserController {
 
 
@@ -36,6 +37,18 @@ public class SysUserController {
 //            sysUserService.save(temp);
 //        }
         return "success";
+    }
+
+    @PostMapping("update")
+    public UserInfoDTO update(@RequestBody UserInfoDTO dto){
+        SysUser sysUser = new SysUser(dto);
+        sysUserService.update(sysUser,new QueryWrapper<SysUser>().eq("id",ContextUtil.getCurrentUserId()));
+        return new UserInfoDTO(sysUserService.getById(ContextUtil.getCurrentUserId()));
+    }
+
+    @GetMapping("select")
+    public UserInfoDTO select(){
+        return new UserInfoDTO(sysUserService.getById(ContextUtil.getCurrentUserId()));
     }
 }
 
