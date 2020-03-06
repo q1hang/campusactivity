@@ -207,7 +207,12 @@ public class CommunitymembersServiceImpl extends ServiceImpl<CommunitymembersMap
     public IPage<CMDTO> getCurrentMembers(Page page,Integer communityId) throws Exception {
         QueryWrapper<Communitymembers> wrapper = new QueryWrapper<>();
         wrapper.eq("cm.CommunityId", communityId);
-        return communitymembersMapper.pageCommunitymem(page, wrapper);
+        IPage<CMDTO> result = communitymembersMapper.pageCommunitymem(page, wrapper);
+        result.getRecords().forEach(x->{
+            x.setCommunityName(communityinformationService.getById(x.getCommunityId()).getCommunityName());
+        });
+
+        return result;
     }
 
     /**

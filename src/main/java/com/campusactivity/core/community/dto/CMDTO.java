@@ -43,6 +43,11 @@ public class CMDTO extends PageDTO {
      */
     private Integer communityId;
 
+    /**
+     * 社团名
+     */
+    private String communityName;
+
 
     /**
      * 到达时间
